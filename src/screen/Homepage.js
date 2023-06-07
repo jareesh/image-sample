@@ -41,7 +41,7 @@ let product = {
 let productItem = {
     productId: 100,
     slug: "100-201-100-1",
-    name: "Tiles1",
+    name: "Tiles2",
     price: 500,
     quantity: 50,
     retailQuantity: 50,
@@ -51,6 +51,7 @@ let productItem = {
     retailUnitType: 0,
     trend: 102
 }
+let token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6InByQloxU0JvODQwN3hCZm9XM3VxRlEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2ODYxMDczMzMsImV4cCI6MTY4NjEyMTczMywiaXNzIjoiaHR0cHM6Ly9zYWxlZXguaW4vaWRlbnRpdHlzZXJ2ZXIiLCJhdWQiOiJoaXZlVUlDbGllbnQiLCJjbGllbnRfaWQiOiJIaXZlV2ViVUkiLCJzdWIiOiJIaXZlQWRtaW4iLCJhdXRoX3RpbWUiOjE2ODYxMDczMzIsImlkcCI6ImxvY2FsIiwiUmVzb3VyY2UiOiJBbGwiLCJSb2xlIjoiMTAxIiwiQmVsb25nc1RvIjoiMTAwIiwiU3ViamVjdCI6IjEwMCIsInNjb3BlIjpbImhpdmVVSUNsaWVudCJdLCJhbXIiOlsicHdkIl19.Wi6CJ7A-zduZ6uf9uMu1Mv8bpNfCKngEqiHjdATsprInLB0L82cwFRyHx8jY_ERHKkl1pkRDhxwfaa0_66v7qtLGVj17nD1-o3ZWm9LKa7uH1qIxLFlabsOV3fyYR9XGGNOa0u66ycA_J3CDBT0Y1pAcaIpwHgyEWz1YMgQDFcXr7dhcWAIL14vy7kilavQhyg6tTb6aaUJjyWxNpve27raD2a9-hgsvxq7a9tiHuYsOGjQReBCQ-dccxoS4SbB9wUkOl8nDLreNS-smsf27Gsx7Ma7HebtJy4ky6BNx2N6rD3egTDI14w5EJ-WzIppoLhBjxenS5r3u6TBXkDaXLw';
 
 export default function Homepage() {
     const [unitTypesRead, setUnitTypesRead] = useState(false)
@@ -60,15 +61,15 @@ export default function Homepage() {
             if (unitTypesRead == false){
                 const response = await fetch('https://saleex.in/identityserver/Config/ProductUnits', {
                     headers: {
-                        // "Authorization": `Bearer ${user?.access_token}`
-                        "Authorization": `Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6InByQloxU0JvODQwN3hCZm9XM3VxRlEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2ODYwMjM3MTUsImV4cCI6MTY4NjAzODExNSwiaXNzIjoiaHR0cHM6Ly9zYWxlZXguaW4vaWRlbnRpdHlzZXJ2ZXIiLCJhdWQiOiJoaXZlVUlDbGllbnQiLCJjbGllbnRfaWQiOiJIaXZlV2ViVUkiLCJzdWIiOiJIaXZlQWRtaW4iLCJhdXRoX3RpbWUiOjE2ODYwMjM3MTUsImlkcCI6ImxvY2FsIiwiUmVzb3VyY2UiOiJBbGwiLCJSb2xlIjoiMTAxIiwiQmVsb25nc1RvIjoiMTAwIiwiU3ViamVjdCI6IjEwMCIsInNjb3BlIjpbImhpdmVVSUNsaWVudCJdLCJhbXIiOlsicHdkIl19.wsSG6u8oP9SdFTKwoZMprCF_YBo0_QYHT1ybHN7azIpHhDgZD1NTJ5ClVQW2vzutQ3cZs8nxXAIkb5n-sgjlvdw_jQcZbMGzbAPb88K707hWIpZWWcRsVY3n3Ue1ZuDtPxUwTh9SII5Lm_ix_v0xjkqDerYanY4vSxZDFkJdRjNqkAQ3_O2VXcjTunsRuSBV54ZmrXhoToCHY5dTNisHz_DOciVqqU0dlIXFd_s6V14HkkUkb4PG4vTu3_IbavC0AE7GZED3o-aNn50MbioBjpLypBAwmIgLN-PWv_UAy4ycfpVG_tzF7OmkvXNpogfJdrPM3EhA5B8ONVLPSCP5tg`
+                        "Authorization": `Bearer ` + token,
                     }
                 });
     
                 if (response.ok == true) {
                     const data = await response.json();
+                    console.log("response.ok");
                     if (data.isSuccess == true) {
-                        // console.log("data.isSuccess");
+                        console.log("data.isSuccess");
                         // console.log(JSON.stringify(data.response));
                         data.response.productUnits.map((productUnit, key) => {
                             var unitID = productUnit.productUnitId;
@@ -78,14 +79,19 @@ export default function Homepage() {
                          });
                          setUnitTypesRead(true);
                     } else {
-                        setUnitTypesRead(false);
-                        ToastAndroid.show(data.message, ToastAndroid.SHORT)
+                        console.log("data.message");
+                        //ToastAndroid.show(data.message, ToastAndroid.SHORT)
                     }
+                } else {
+                    console.log("data.message2");
+                    console.log(response);
                 }
             }
         }
         getProductUnits().catch(err => {
-            ToastAndroid.show(err.message, ToastAndroid.SHORT)
+            console.log("err.message");
+            console.log(err.message);
+            //ToastAndroid.show(err.message, ToastAndroid.SHORT)
         })
 
       }, []); // <- add empty brackets here
@@ -94,27 +100,16 @@ export default function Homepage() {
         unitTypesRead && <View style={styles.view}>
                 <Image  
                     source={{    
-                    uri: 'https://saleex.in/hivemedia/Media/ProductResourceV2?url=100-201-100-1-1&displayTypeId=102&productId=100',
-                    method: 'GET',
-                    headers: 
-                    {
-                        Authorization: `Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6InByQloxU0JvODQwN3hCZm9XM3VxRlEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2ODYwMjM3MTUsImV4cCI6MTY4NjAzODExNSwiaXNzIjoiaHR0cHM6Ly9zYWxlZXguaW4vaWRlbnRpdHlzZXJ2ZXIiLCJhdWQiOiJoaXZlVUlDbGllbnQiLCJjbGllbnRfaWQiOiJIaXZlV2ViVUkiLCJzdWIiOiJIaXZlQWRtaW4iLCJhdXRoX3RpbWUiOjE2ODYwMjM3MTUsImlkcCI6ImxvY2FsIiwiUmVzb3VyY2UiOiJBbGwiLCJSb2xlIjoiMTAxIiwiQmVsb25nc1RvIjoiMTAwIiwiU3ViamVjdCI6IjEwMCIsInNjb3BlIjpbImhpdmVVSUNsaWVudCJdLCJhbXIiOlsicHdkIl19.wsSG6u8oP9SdFTKwoZMprCF_YBo0_QYHT1ybHN7azIpHhDgZD1NTJ5ClVQW2vzutQ3cZs8nxXAIkb5n-sgjlvdw_jQcZbMGzbAPb88K707hWIpZWWcRsVY3n3Ue1ZuDtPxUwTh9SII5Lm_ix_v0xjkqDerYanY4vSxZDFkJdRjNqkAQ3_O2VXcjTunsRuSBV54ZmrXhoToCHY5dTNisHz_DOciVqqU0dlIXFd_s6V14HkkUkb4PG4vTu3_IbavC0AE7GZED3o-aNn50MbioBjpLypBAwmIgLN-PWv_UAy4ycfpVG_tzF7OmkvXNpogfJdrPM3EhA5B8ONVLPSCP5tg`
-                    },
-                    body: 'Your Body goes here'  
+                        uri: 'https://saleex.in/hivemedia/Media/ProductResource?url=100-201-100-1-1&displayTypeId=102&productId=100',
+                        method: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ` + token
+                    }  
                     }} 
-                    style={{ width: 400, height: 400 }}
+                    style={{ width: 120, height: 120 }}
                     onLoadStart={() => console.log("onLoadStart")}
                     onLoadEnd={() => console.log("onLoadEnd")}
                     onError={({ nativeEvent: {error} }) => console.log(error)}/>
-                <Image
-                    source={
-                    { uri: 'https://saleex.in/hivemedia/Media/ProductResourceV2?url=100-201-100-1-1&displayTypeId=102&productId=100',
-                    method: 'GET',
-                    headers: {
-                        "Authorization": `Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6InByQloxU0JvODQwN3hCZm9XM3VxRlEiLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2ODYwMjM3MTUsImV4cCI6MTY4NjAzODExNSwiaXNzIjoiaHR0cHM6Ly9zYWxlZXguaW4vaWRlbnRpdHlzZXJ2ZXIiLCJhdWQiOiJoaXZlVUlDbGllbnQiLCJjbGllbnRfaWQiOiJIaXZlV2ViVUkiLCJzdWIiOiJIaXZlQWRtaW4iLCJhdXRoX3RpbWUiOjE2ODYwMjM3MTUsImlkcCI6ImxvY2FsIiwiUmVzb3VyY2UiOiJBbGwiLCJSb2xlIjoiMTAxIiwiQmVsb25nc1RvIjoiMTAwIiwiU3ViamVjdCI6IjEwMCIsInNjb3BlIjpbImhpdmVVSUNsaWVudCJdLCJhbXIiOlsicHdkIl19.wsSG6u8oP9SdFTKwoZMprCF_YBo0_QYHT1ybHN7azIpHhDgZD1NTJ5ClVQW2vzutQ3cZs8nxXAIkb5n-sgjlvdw_jQcZbMGzbAPb88K707hWIpZWWcRsVY3n3Ue1ZuDtPxUwTh9SII5Lm_ix_v0xjkqDerYanY4vSxZDFkJdRjNqkAQ3_O2VXcjTunsRuSBV54ZmrXhoToCHY5dTNisHz_DOciVqqU0dlIXFd_s6V14HkkUkb4PG4vTu3_IbavC0AE7GZED3o-aNn50MbioBjpLypBAwmIgLN-PWv_UAy4ycfpVG_tzF7OmkvXNpogfJdrPM3EhA5B8ONVLPSCP5tg`
-                            }
-                            }
-                    }/>
                 <OrderItem currentProduct={productItem} unitTypesMap={unitTypesMap} />
                 <OrderItem currentProduct={productItem} unitTypesMap={unitTypesMap} />
                 <OrderItem currentProduct={productItem} unitTypesMap={unitTypesMap} />
